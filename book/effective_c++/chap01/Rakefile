@@ -1,0 +1,16 @@
+require 'rake/clean'
+
+SRCS = FileList["*.cpp"]
+EXES = SRCS.ext("exe")
+
+task :default => EXES
+
+CXX = 'g++'
+CXXFLAGS = ''
+LIBFLAGS = ''
+
+rule '.exe' => '.cpp' do |t|
+  sh "#{CXX} #{t.source} -o #{t.name} #{CXXFLAGS} #{LIBFLAGS}"
+end
+
+CLEAN.include(EXES, 'a.out')
