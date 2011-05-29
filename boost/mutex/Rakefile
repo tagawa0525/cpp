@@ -15,10 +15,6 @@ LD_LIBRARY_PATH = '-L/opt/local/lib'
 LIBS            = "-lboost_unit_test_framework-mt"
 LDFLAGS         = "#{LD_LIBRARY_PATH} #{LIBS}"
 
-rule '.exe' => '.cc' do |t|
-  sh "#{CXX} #{t.source} -o #{t.name} #{CXXFLAGS} #{LDFLAGS}"
-end
-
 rule '.exe' => '.cpp' do |t|
   sh "#{CXX} #{t.source} -o #{t.name} #{CXXFLAGS} #{LDFLAGS}"
 end

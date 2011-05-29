@@ -1,11 +1,11 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
+#include <boost/tr1/memory.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
 #include <assert.h>
-#include <boost/tr1/memory.hpp>
 
 class Investment
 {
