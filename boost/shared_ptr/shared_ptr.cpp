@@ -16,9 +16,12 @@ class Foo
     {
       return "Foo";
     }
-    void deleter();
 };
-void Foo::deleter() { cout << "Call deleter" << endl; }
+void deleter(Foo* pf)
+{
+  cout << "Call deleter" << endl;
+  delete pf;
+}
 
 BOOST_AUTO_TEST_CASE( test_shared_pointer )
 {
@@ -42,5 +45,5 @@ BOOST_AUTO_TEST_CASE( test_deleter )
 {
   Foo* pRow = new Foo;
   BOOST_CHECK( pRow );
-  tr1::shared_ptr<Foo> pi(pRow);
+  tr1::shared_ptr<Foo> pi(pRow, deleter);
 }

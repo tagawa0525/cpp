@@ -34,25 +34,29 @@ BOOST_AUTO_TEST_CASE( test_mutex_shared_pointer )
   pMtx.get()->unlock();
 }
 
-/*
+void lock(boost::mutex* pm)
+{
+  pm->lock();
+}
+void unlock(boost::mutex* pm)
+{
+  pm->unlock();
+}
+
 class Lock
 {
   public:
     Lock(boost::mutex* pm)
+      :pMtx(pm, unlock)
     {
-      tr1::shared_ptr<boost::mutex> pMtx(pm);
-      pm->lock();
-    }
-    ~Lock()
-    {
-      pm->unlock();
+      lock(pm);
     }
   private:
     tr1::shared_ptr<boost::mutex> pMtx;
 };
+
 BOOST_AUTO_TEST_CASE( test_Lock )
 {
   boost::mutex* pm = new boost::mutex;
   Lock l(pm);
 }
-*/

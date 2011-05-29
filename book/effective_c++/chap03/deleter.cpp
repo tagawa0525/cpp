@@ -10,55 +10,23 @@
 
 using namespace std;
 
+void lock  (boost::mutex* pm) { pm->lock(); }
+void unlock(boost::mutex* pm) { pm->unlock(); }
+
+class Lock
+{
+  public:
+    explicit Lock(boost::mutex* pm)
+      :mutexPtr(pm, unlock)
+    {
+      lock(mutexPtr.get());
+    }
+  private:
+    std::tr1::shared_ptr<boost::mutex> mutexPtr;
+};
+
 BOOST_AUTO_TEST_CASE( test_Lock )
 {
-  class Lock
-  {
-    public:
-      explicit Lock(boost::mutex* pm)
-        //:mutexPtr(pm, unlock)
-        :mutexPtr(pm)
-      {
-        pm->lock();
-      }
-    private:
-      std::tr1::shared_ptr<boost::mutex> mutexPtr;
-  };
-
-  boost::mutex* mtx;
-  Lock* pl = new Lock(mtx);
-  BOOST_CHECK(pl == NULL);
+  boost::mutex* mtx = new boost::mutex;
+  Lock pl(mtx);
 }
-/*
- * BOOST_AUTO_TEST_CASE( test_Lock2 )
- * {
- *   class Lock
- *   {
- *     public:
- *       explicit Lock(boost::mutex* pm)
- *         //:mutexPtr(pm, unlock)
- *         :mutexPtr(pm)
- *       {
- *         lock(mutexPtr.get());
- *       }
- *       ~Lock()
- *       {
- *         unlock(mutexPtr.get());
- *       }
- *     private:
- *       void lock(boost::mutex* pm)
- *       {
- *         pm->lock();
- *       }
- *       void unlock(boost::mutex* pm)
- *       {
- *         pm->unlock();
- *       }
- *       std::tr1::shared_ptr<boost::mutex> mutexPtr;
- *   };
- *
- *   boost::mutex* mtx;
- *   Lock* pl = new Lock(mtx);
- *   BOOST_CHECK(pl == NULL);
- * }
- */
